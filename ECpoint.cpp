@@ -15,9 +15,8 @@ ECpoint ECpoint::operator +(const ECpoint &that) const {
 	if (dx < 0) dx += curve.p;
 	cpp_int dy = that.y - y;
 	if (dy < 0) dy += curve.p;
-
 	//powm(dx, p - 2, p) = x^(-1) mod p = x^(p-2) mod p
-	//p - prime, use Euler theorem(watch Wiki Modular Multiplicative inverse)
+	//так как р - простое используем формулу Ёйлера (смотри статью на Wiki Modular Multiplicative inverse)
 	cpp_int lambda = (dy*cpp_int(powm(dx, curve.p - 2, curve.p))) % curve.p;
 	if (lambda < 0) lambda += curve.p;
 
@@ -51,7 +50,9 @@ ECpoint ECpoint::doubl() const{
 
 //”множение точки на число
 ECpoint ECpoint::multiply(cpp_int k) const {
-	if (k <= 0) throw("Wrong number!");
+	if (k <= 0) {
+		throw("Wrong number!");
+	}
 	ECpoint res(*this), p(*this);
 	k--;
 	while (k > 0) {
